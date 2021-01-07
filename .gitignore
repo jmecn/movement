@@ -1,12 +1,13 @@
-/.gradle/
 **/.settings/
-**/build/
-**/bin/
 **/logs/
 **/.classpath
 **/.project
-JPsTale-Field/Field
 **/*.dll
 **/*.dylib
 **/*.so
 **/*.log*
+.gitattributes
+
+**/build
+**/target
+**/bin
