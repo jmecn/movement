@@ -115,6 +115,14 @@ public class TrailRenderer extends AbstractControl {
         mesh.update(queue);
     }
 
+    public void setLifeTime(float lifeTime) {
+        if (lifeTime <= 0) {
+            throw new IllegalArgumentException("lifeTime must be greater than 0");
+        }
+
+        this.lifeTime = lifeTime;
+    }
+
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
     }
