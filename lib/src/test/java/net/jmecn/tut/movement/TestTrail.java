@@ -77,13 +77,13 @@ public class TestTrail extends SimpleApplication {
         cam.setRotation(new Quaternion(-0.008452326f, 0.9888665f, -0.06188533f, -0.13506193f));
 
         // geometry
-        Sphere mesh = new Sphere(32, 24, 2f);
+        Sphere mesh = new Sphere(32, 24, 0.5f);
         target = new Geometry("sphere");
         target.setMesh(mesh);
 
         Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-        mat.setColor("Diffuse", ColorRGBA.Blue);
-        mat.setColor("Ambient", ColorRGBA.Blue);
+        mat.setColor("Diffuse", ColorRGBA.DarkGray);
+        mat.setColor("Ambient", ColorRGBA.DarkGray);
         mat.setColor("Specular", ColorRGBA.White);
         mat.setFloat("Shininess", 32);
         mat.setBoolean("UseMaterialColors", true);
@@ -93,8 +93,8 @@ public class TestTrail extends SimpleApplication {
         trailRenderer = new TrailRenderer(rootNode, assetManager, cam);
         trailRenderer.setColor(ColorRGBA.Red);
         trailRenderer.setMinVertexDistance(1f);
-        trailRenderer.setLineWidth(1f);
-        trailRenderer.setTrailPerSecond(20);
+        trailRenderer.setLineWidth(0.1f);
+        trailRenderer.setTrailPerSecond(30);
 
         target.addControl(trailRenderer);
 

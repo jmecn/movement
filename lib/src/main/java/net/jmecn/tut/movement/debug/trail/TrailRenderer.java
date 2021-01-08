@@ -13,6 +13,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
 import com.jme3.util.TempVars;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -39,6 +40,8 @@ public class TrailRenderer extends AbstractControl {
     private float trailPerSecond = 20;
     private float coolDown = 1.0f / trailPerSecond;
     private float time = 0f;
+
+    private float lifeTime = 5f;
 
     // control max trail count
     private int maxCount = 1000;
@@ -119,7 +122,7 @@ public class TrailRenderer extends AbstractControl {
     @Override
     protected void controlUpdate(float tpf) {
         time += tpf;
-        
+
         Vector3f position = spatial.getWorldTranslation();
         if (!isStarted) {
             addTail(position);
@@ -127,7 +130,24 @@ public class TrailRenderer extends AbstractControl {
             return;
         }
 
+        boolean updated = false;
+        if (queue.size() > 0) {
+            Iterator<TrailEntity> itor = queue.iterator();
+            while(itor.hasNext()) {
+                TrailEntity e = itor.next();
+                e.lifeTime += tpf;
+                if (e.lifeTime >= lifeTime) {
+                    itor.remove();
+                    trailPool.add(e);
+                    updated = true;
+                }
+            }
+        }
+
         if (position.distance(lastPosition) < minVertexDistance || time < coolDown) {
+            if (updated) {
+                updateGeometry();
+            }
             return;
         }
 

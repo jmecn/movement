@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>lib</artifactId>
+    <artifactId>sliding-a-sphere</artifactId>
 
     <dependencies>
         <dependency>
@@ -19,7 +19,6 @@
         <dependency>
             <groupId>org.jmonkeyengine</groupId>
             <artifactId>jme3-lwjgl</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
