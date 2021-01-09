@@ -12,12 +12,14 @@
 	<artifactId>sliding-a-sphere</artifactId>
 
 	<dependencies>
+	    <!-- TrailRenderer -->
 		<dependency>
 			<groupId>net.jmecn.tut.movement</groupId>
 			<artifactId>lib</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
+        <!-- jme3 -->
 		<dependency>
 			<groupId>org.jmonkeyengine</groupId>
 			<artifactId>jme3-desktop</artifactId>
@@ -25,6 +27,12 @@
 		<dependency>
 			<groupId>org.jmonkeyengine</groupId>
 			<artifactId>jme3-lwjgl</artifactId>
+		</dependency>
+
+        <!-- ESC -->
+		<dependency>
+			<groupId>com.simsilica</groupId>
+			<artifactId>zay-es</artifactId>
 		</dependency>
 	</dependencies>
 </project>

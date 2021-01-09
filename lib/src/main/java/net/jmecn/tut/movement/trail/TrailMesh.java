@@ -1,4 +1,4 @@
-package net.jmecn.tut.movement.debug.trail;
+package net.jmecn.tut.movement.trail;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Mesh;

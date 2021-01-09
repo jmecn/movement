@@ -16,6 +16,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <jme3.version>3.3.2-stable</jme3.version>
+        <zay-es.version>1.2.1</zay-es.version>
     </properties>
 
     <repositories>
@@ -44,6 +45,7 @@
                 <artifactId>guava</artifactId>
                 <version>29.0-jre</version>
             </dependency>
+
             <dependency>
                 <groupId>org.jmonkeyengine</groupId>
                 <artifactId>jme3-core</artifactId>
@@ -68,6 +70,18 @@
                 <groupId>org.jmonkeyengine</groupId>
                 <artifactId>jme3-bullet-natives</artifactId>
                 <version>${jme3.version}</version>
+            </dependency>
+
+            <!-- ECS -->
+            <dependency>
+                <groupId>com.simsilica</groupId>
+                <artifactId>zay-es</artifactId>
+                <version>${zay-es.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.simsilica</groupId>
+                <artifactId>zay-es-net</artifactId>
+                <version>${zay-es.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -1,4 +1,4 @@
-package net.jmecn.tut.movement.debug.trail;
+package net.jmecn.tut.movement.trail;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
