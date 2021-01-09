@@ -7,12 +7,6 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.Vector2f;
-import com.jme3.math.Vector3f;
-import com.simsilica.es.EntityData;
-import com.simsilica.es.EntitySet;
-
-import net.jmecn.tut.movement.esc.component.Target;
-import net.jmecn.tut.movement.esc.component.Velocity;
 
 /**
  * @title InputState
@@ -20,19 +14,21 @@ import net.jmecn.tut.movement.esc.component.Velocity;
  * @date 2021年1月9日
  * @version 1.0
  */
-public class PlayerInputState extends BaseAppState implements ActionListener {
+public class InputState extends BaseAppState implements ActionListener {
 
     private InputManager inputManager;
-
-    private EntityData ed;
-    private EntitySet  entities;
 
     private final static String MOVE_LEFT     = "MOVE_LEFT";
     private final static String MOVE_RIGHT    = "MOVE_RIGHT";
     private final static String MOVE_FORWARD  = "MOVE_FORWARD";
     private final static String MOVE_BACKWARD = "MOVE_BACKWARD";
 
-    private static String[] mappings = new String[] { MOVE_LEFT, MOVE_RIGHT, MOVE_FORWARD, MOVE_BACKWARD, };
+    private static String[] MAPPINGS = {
+        MOVE_LEFT,
+        MOVE_RIGHT,
+        MOVE_FORWARD,
+        MOVE_BACKWARD,
+    };
 
     private boolean left     = false;
     private boolean right    = false;
@@ -41,26 +37,28 @@ public class PlayerInputState extends BaseAppState implements ActionListener {
 
     private Vector2f playerInput = new Vector2f(0f, 0f);
 
+    private Vector2f readOnly = new Vector2f();
+
     private float inputSensitive = 5f;
 
-    // velocity
-    private Vector3f desiredVelocity = new Vector3f(0f, 0f, 0f);
-    private float    maxSpeed        = 10f;
-
-    private Vector3f acceleration    = new Vector3f(0f, 0f, 0f);
-    private float    maxAcceleration = 30f;
+    public Vector2f getPlayerInput() {
+        // return the copy of playerInput
+        // so no one can modify the original value
+        return readOnly.set(playerInput);
+    }
 
     @Override
     protected void initialize(Application app) {
         this.inputManager = app.getInputManager();
-
-        // 筛选用于显示的实体
-        ed = app.getStateManager().getState(EntityDataState.class).getEntityData();
-        entities = ed.getEntities(Velocity.class, Target.class);
     }
 
     @Override
     protected void cleanup(Application app) {
+        for (String mapping : MAPPINGS) {
+            if (inputManager.hasMapping(mapping)) {
+                inputManager.deleteMapping(mapping);
+            }
+        }
     }
 
     @Override
@@ -70,13 +68,15 @@ public class PlayerInputState extends BaseAppState implements ActionListener {
         inputManager.addMapping(MOVE_FORWARD, new KeyTrigger(KeyInput.KEY_W));
         inputManager.addMapping(MOVE_BACKWARD, new KeyTrigger(KeyInput.KEY_S));
 
-        inputManager.addListener(this, mappings);
+        inputManager.addListener(this, MAPPINGS);
     }
 
     @Override
     protected void onDisable() {
-        for (String mapping : mappings) {
-            inputManager.deleteMapping(mapping);
+        for (String mapping : MAPPINGS) {
+            if (inputManager.hasMapping(mapping)) {
+                inputManager.deleteMapping(mapping);
+            }
         }
     }
 
@@ -97,7 +97,6 @@ public class PlayerInputState extends BaseAppState implements ActionListener {
                 break;
         }
     }
-
 
     @Override
     public void update(float tpf) {
@@ -128,36 +127,6 @@ public class PlayerInputState extends BaseAppState implements ActionListener {
         if (length >= 1f) {
             playerInput.divideLocal(length);
         }
-
-        // Acceleration
-        acceleration.set(playerInput.x, 0f, playerInput.y);
-        acceleration.multLocal(maxAcceleration);
-
-        // Velocity
-        desiredVelocity.set(playerInput.x, 0f, playerInput.y);
-        desiredVelocity.multLocal(maxSpeed);
-
-        float maxSpeedChange = maxAcceleration * tpf;
-
-        entities.applyChanges();
-        entities.forEach(it -> {
-            Velocity v = ed.getComponent(it.getId(), Velocity.class);
-
-            Vector3f velocity = v.getVelocity();
-            velocity.x = moveToward(velocity.x, desiredVelocity.x, maxSpeedChange);
-            velocity.z = moveToward(velocity.z, desiredVelocity.z, maxSpeedChange);
-
-            ed.setComponent(it.getId(), new Velocity(velocity));
-        });
     }
 
-    float moveToward(float start, float end, float step) {
-        if (start < end) {
-            start = Math.min(start + step, end);
-        } else if (start > end) {
-            start = Math.max(start - step, end);
-        }
-
-        return start;
-    }
 }

@@ -6,8 +6,9 @@ import com.jme3.app.StatsAppState;
 
 import net.jmecn.tut.movement.esc.state.EntityDataState;
 import net.jmecn.tut.movement.esc.state.MoveState;
-import net.jmecn.tut.movement.esc.state.PlayerInputState;
+import net.jmecn.tut.movement.esc.state.InputState;
 import net.jmecn.tut.movement.esc.state.SceneState;
+import net.jmecn.tut.movement.esc.state.VelocityState;
 
 /**
  * @title SlidingASphere
@@ -23,7 +24,7 @@ public class SlidingASphere extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        stateManager.attachAll(new SceneState(), new PlayerInputState(), new MoveState());
+        stateManager.attachAll(new SceneState(), new InputState(), new VelocityState(), new MoveState());
     }
 
     public static void main(String[] args) {

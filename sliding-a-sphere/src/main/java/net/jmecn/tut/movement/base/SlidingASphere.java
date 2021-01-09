@@ -38,18 +38,13 @@ public class SlidingASphere extends SimpleApplication implements ActionListener 
     private boolean forward  = false;
     private boolean backward = false;
 
-    private Vector2f playerInput = new Vector2f(0f, 0f);
-
-    private float inputSensitive = 5f;
-
-    private Vector3f position    = new Vector3f(0f, 0.5f, 0f);
+    // playerInput
+    private Vector2f playerInput    = new Vector2f(0f, 0f);
+    private float    inputSensitive = 5f;
 
     // velocity
     private Vector3f desiredVelocity = new Vector3f(0f, 0f, 0f);
-    private Vector3f velocity        = new Vector3f(0f, 0f, 0f);
     private float    maxSpeed        = 10f;
-
-    private Vector3f acceleration    = new Vector3f(0f, 0f, 0f);
     private float    maxAcceleration = 30f;
 
     private Vector3f displacement = new Vector3f();
@@ -60,6 +55,9 @@ public class SlidingASphere extends SimpleApplication implements ActionListener 
     private float bounciness = 0.9f;
 
     private Geometry target;
+
+    private Vector3f position = new Vector3f(0f, 0.5f, 0f);
+    private Vector3f velocity = new Vector3f(0f, 0f, 0f);
 
     @Override
     public void simpleInitApp() {
@@ -151,10 +149,6 @@ public class SlidingASphere extends SimpleApplication implements ActionListener 
         if (length >= 1f) {
             playerInput.divideLocal(length);
         }
-
-        // Acceleration
-        acceleration.set(playerInput.x, 0f, playerInput.y);
-        acceleration.multLocal(maxAcceleration);
 
         // Velocity
         desiredVelocity.set(playerInput.x, 0f, playerInput.y);
