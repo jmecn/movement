@@ -1,4 +1,4 @@
-package net.jmecn.tut.movement._01;
+package net.jmecn.tut.movement.base;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.input.KeyInput;
