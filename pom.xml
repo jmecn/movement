@@ -8,6 +8,7 @@
     <modules>
         <module>lib</module>
         <module>sliding-a-sphere</module>
+        <module>physics</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -68,7 +69,7 @@
             </dependency>
             <dependency>
                 <groupId>org.jmonkeyengine</groupId>
-                <artifactId>jme3-bullet-natives</artifactId>
+                <artifactId>jme3-bullet-native</artifactId>
                 <version>${jme3.version}</version>
             </dependency>
 
