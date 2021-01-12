@@ -44,14 +44,14 @@ public class TestStair extends SimpleApplication {
         yellow.setColor("Specular", ColorRGBA.White);
         yellow.setTexture("DiffuseMap", texture);
         yellow.setBoolean("UseMaterialColors", true);
-        
+
         Material white = new Material(assetManager, Materials.LIGHTING);
         white.setColor("Diffuse", ColorRGBA.White);
         white.setColor("Ambient", ColorRGBA.White);
         white.setColor("Specular", ColorRGBA.White);
         white.setTexture("DiffuseMap", texture);
         white.setBoolean("UseMaterialColors", true);
-        
+
         Material green = new Material(assetManager, Materials.LIGHTING);
         green.setColor("Diffuse", new ColorRGBA(0.7f, 1f, 0.7f, 1f));
         green.setColor("Ambient", new ColorRGBA(0.7f, 1f, 0.7f, 1f));
@@ -61,13 +61,14 @@ public class TestStair extends SimpleApplication {
 
         int n = 0;
         Stair p = new Stair();
-        p.setX(3);
-        p.setY(10);
-        p.setZ(10);
+        p.setX(2);
+        p.setY(4);
+        p.setZ(6);
         p.setBuildSide(true);
-        for (int i = 2; i < 10; i++) {
-            p.setSteps(i);
-            Geometry geom = new Geometry("p"+i, p.build());
+        for (int i = 0; i <= 12; i++) {
+            p.setCurvature(30 * i);
+            p.setSteps(12 + i);
+            Geometry geom = new Geometry("p" + i, p.build());
 
             if (n % 2 == 0) {
                 geom.setMaterial(yellow);
@@ -76,12 +77,12 @@ public class TestStair extends SimpleApplication {
             }
             n++;
 
-            geom.setLocalTranslation(i*3, 0, 0);
+            geom.setLocalTranslation(i * 9, 0, 0);
             rootNode.attachChild(geom);
         }
 
         Plane plane = new Plane();
-        plane.setX(69);
+        plane.setX(120);
         plane.setY(45);
         plane.setAxis(Axis.Y);
         Geometry geom = new Geometry("gy", plane.build());
@@ -97,7 +98,7 @@ public class TestStair extends SimpleApplication {
         dl.setColor(ColorRGBA.White.mult(0.3f));
         dl.setDirection(new Vector3f(-1, -5, 1).normalizeLocal());
         rootNode.addLight(dl);
-        
+
         AmbientLight al = new AmbientLight();
         al.setColor(ColorRGBA.White.mult(0.7f));
         rootNode.addLight(al);
