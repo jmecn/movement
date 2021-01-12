@@ -1,6 +1,12 @@
-package net.jmecn.tut.movement.shape;
+package net.jmecn.tut.scene.shape;
 
+import com.jme3.math.FastMath;
 import com.jme3.scene.Mesh;
+import com.jme3.scene.VertexBuffer.Type;
+import com.jme3.util.BufferUtils;
+
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 /**
  * @title Stair
@@ -224,7 +230,243 @@ public class Stair implements MeshBuilder {
 
     @Override
     public Mesh build() {
-        // TODO Auto-generated method stub
-        return null;
+        Mesh mesh = new Mesh();
+        mesh.setStatic();
+
+        if (curvature == 0) {
+            straightStair(mesh);
+        } else {
+            curvatureStair(mesh);
+        }
+
+        mesh.updateCounts();
+        mesh.updateBound();
+
+        return mesh;
     }
+
+    private Mesh straightStair(Mesh mesh) {
+        int dv = 2;
+        int quadCount = steps * 2;
+        if (buildSide) {
+            quadCount += steps * 3 + 1;
+            dv += 3;
+        }
+
+        int vcount = quadCount * 4;
+        int icount = quadCount * 6;
+        FloatBuffer vertFB = BufferUtils.createFloatBuffer(vcount * 3);
+        FloatBuffer normFB = BufferUtils.createFloatBuffer(vcount * 3);
+        FloatBuffer texFB = BufferUtils.createFloatBuffer(vcount * 2);
+        IntBuffer idxFB = BufferUtils.createIntBuffer(icount);
+
+        float dy = y / steps;
+        float dz = z / steps;
+
+        for (int i = 0; i < steps; i++) {
+            int idx = i * dv * 4;
+
+            float x0 = 0;
+            float x1 = x;
+
+            float y0 = i * dy;
+            float y1 = y0 + dy;
+
+            float z0 = i * dz;
+            float z1 = z0 + dz;
+
+            // top
+            // v0 x0, y1, -z0
+            // v1 x1, y1, -z0
+            // v2 x0, y1, -z1
+            // v3 x1, y1, -z1
+            vertFB.put(x0).put(y1).put(-z0);
+            vertFB.put(x1).put(y1).put(-z0);
+            vertFB.put(x0).put(y1).put(-z1);
+            vertFB.put(x1).put(y1).put(-z1);
+
+            texFB.put(x0).put(z0);
+            texFB.put(x1).put(z0);
+            texFB.put(x0).put(z1);
+            texFB.put(x1).put(z1);
+
+            normFB.put(0).put(1).put(0);
+            normFB.put(0).put(1).put(0);
+            normFB.put(0).put(1).put(0);
+            normFB.put(0).put(1).put(0);
+
+            int t0 = idx + 0;
+            int t1 = idx + 1;
+            int t2 = idx + 2;
+            int t3 = idx + 3;
+
+            idxFB.put(t0).put(t1).put(t2);
+            idxFB.put(t1).put(t3).put(t2);
+
+            // front
+            // v0 0, y0, -z0
+            // v1 x, y0, -z0
+            // v2 0, y1, -z0
+            // v3 x, y1, -z0
+            vertFB.put(x0).put(y0).put(-z0);
+            vertFB.put(x1).put(y0).put(-z0);
+            vertFB.put(x0).put(y1).put(-z0);
+            vertFB.put(x1).put(y1).put(-z0);
+
+            texFB.put(x0).put(y0);
+            texFB.put(x1).put(y0);
+            texFB.put(x0).put(y1);
+            texFB.put(x1).put(y1);
+
+            normFB.put(0).put(0).put(1);
+            normFB.put(0).put(0).put(1);
+            normFB.put(0).put(0).put(1);
+            normFB.put(0).put(0).put(1);
+
+            int f0 = idx + 4;
+            int f1 = idx + 5;
+            int f2 = idx + 6;
+            int f3 = idx + 7;
+
+            idxFB.put(f0).put(f1).put(f2);
+            idxFB.put(f1).put(f3).put(f2);
+
+            if (!buildSide) {
+                continue;
+            }
+
+            // right/inner side
+            // v0 x1 0 z0
+            // v1 x1 0 z1
+            // v2 x1 y1 z0
+            // v3 x1 y1 z1
+            vertFB.put(x1).put(0).put(-z0);
+            vertFB.put(x1).put(0).put(-z1);
+            vertFB.put(x1).put(y1).put(-z0);
+            vertFB.put(x1).put(y1).put(-z1);
+
+            texFB.put(z0).put(0);
+            texFB.put(z1).put(0);
+            texFB.put(z0).put(y1);
+            texFB.put(z1).put(y1);
+
+            normFB.put(1).put(0).put(0);
+            normFB.put(1).put(0).put(0);
+            normFB.put(1).put(0).put(0);
+            normFB.put(1).put(0).put(0);
+
+            int r0 = idx + 8;
+            int r1 = idx + 9;
+            int r2 = idx + 10;
+            int r3 = idx + 11;
+
+            idxFB.put(r0).put(r1).put(r2);
+            idxFB.put(r1).put(r3).put(r2);
+
+            // left/outer side
+            // v0 x0 0 z0
+            // v1 x0 0 z1
+            // v2 x0 y1 z0
+            // v3 x0 y1 z1
+            vertFB.put(x0).put(0).put(-z0);
+            vertFB.put(x0).put(0).put(-z1);
+            vertFB.put(x0).put(y1).put(-z0);
+            vertFB.put(x0).put(y1).put(-z1);
+
+            texFB.put(z0).put(0);
+            texFB.put(z1).put(0);
+            texFB.put(z0).put(y1);
+            texFB.put(z1).put(y1);
+
+            normFB.put(-1).put(0).put(0);
+            normFB.put(-1).put(0).put(0);
+            normFB.put(-1).put(0).put(0);
+            normFB.put(-1).put(0).put(0);
+
+            int l0 = idx + 12;
+            int l1 = idx + 13;
+            int l2 = idx + 14;
+            int l3 = idx + 15;
+
+            idxFB.put(l0).put(l2).put(l1);
+            idxFB.put(l1).put(l2).put(l3);
+
+            // bottom
+            vertFB.put(x0).put(0).put(-z0);
+            vertFB.put(x1).put(0).put(-z0);
+            vertFB.put(x0).put(0).put(-z1);
+            vertFB.put(x1).put(0).put(-z1);
+
+            texFB.put(x0).put(z0);
+            texFB.put(x1).put(z0);
+            texFB.put(x0).put(z1);
+            texFB.put(x1).put(z1);
+
+            normFB.put(0).put(-1).put(0);
+            normFB.put(0).put(-1).put(0);
+            normFB.put(0).put(-1).put(0);
+            normFB.put(0).put(-1).put(0);
+
+            int b0 = idx + 16;
+            int b1 = idx + 17;
+            int b2 = idx + 18;
+            int b3 = idx + 19;
+
+            idxFB.put(b0).put(b2).put(b1);
+            idxFB.put(b1).put(b2).put(b3);
+        }
+
+        // end
+        vertFB.put(0).put(0).put(-z);
+        vertFB.put(x).put(0).put(-z);
+        vertFB.put(0).put(y).put(-z);
+        vertFB.put(x).put(y).put(-z);
+
+        texFB.put(0).put(0);
+        texFB.put(x).put(0);
+        texFB.put(0).put(y);
+        texFB.put(x).put(y);
+
+        normFB.put(0).put(0).put(-1);
+        normFB.put(0).put(0).put(-1);
+        normFB.put(0).put(0).put(-1);
+        normFB.put(0).put(0).put(-1);
+
+        int idx = steps * dv * 4;
+        int e0 = idx + 0;
+        int e1 = idx + 1;
+        int e2 = idx + 2;
+        int e3 = idx + 3;
+
+        idxFB.put(e0).put(e2).put(e1);
+        idxFB.put(e1).put(e2).put(e3);
+
+        // VB
+        mesh.setBuffer(Type.Position, 3, vertFB);
+        mesh.setBuffer(Type.Normal, 3, normFB);
+        mesh.setBuffer(Type.TexCoord, 2, texFB);
+        mesh.setBuffer(Type.Index, 3, idxFB);
+
+        return mesh;
+    }
+
+    private Mesh curvatureStair(Mesh mesh) {
+        float rad = FastMath.DEG_TO_RAD * curvature;
+        float radius = z * FastMath.RAD_TO_DEG / curvature;
+
+        for (int i = 0; i < steps; i++) {
+            // front
+
+            // top
+
+            // inner side
+
+            // outer side
+
+            // bottom
+        }
+
+        return mesh;
+    }
+
 }

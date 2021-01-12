@@ -1,4 +1,4 @@
-package net.jmecn.tut.movement;
+package net.jmecn.tut.texture;
 
 import java.awt.Color;
 import java.awt.Graphics;

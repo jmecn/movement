@@ -23,8 +23,8 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.shape.Quad;
 import com.jme3.scene.shape.Sphere;
 
-import net.jmecn.tut.movement.shape.Prism;
 import net.jmecn.tut.movement.trail.TrailRenderer;
+import net.jmecn.tut.scene.shape.Prism;
 
 /**
  * @title SlidingASphere

@@ -1,4 +1,4 @@
-package net.jmecn.tut.movement.shape;
+package net.jmecn.tut.scene.shape;
 
 import com.jme3.scene.Mesh;
 

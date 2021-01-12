@@ -1,10 +1,9 @@
-package net.jmecn.tut.movement.shape;
+package net.jmecn.tut.scene.shape;
 
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Mesh;
-import com.jme3.scene.Mesh.Mode;
 import com.jme3.scene.VertexBuffer.Type;
 import com.jme3.util.BufferUtils;
 
@@ -109,12 +108,12 @@ public class Prism implements MeshBuilder {
         float lenR = FastMath.sqrt(xTopR * xTopR + y * y);
 
         // vertex
-        Vector3f va = new Vector3f(-x, 0, 0);
-        Vector3f vb = new Vector3f(x, 0, 0);
-        Vector3f vc = new Vector3f(offset, y, 0);
-        Vector3f vd = new Vector3f(-x, 0, -z);
-        Vector3f ve = new Vector3f(x, 0, -z);
-        Vector3f vf = new Vector3f(offset, y, -z);
+        Vector3f va = new Vector3f(-x, 0, z);
+        Vector3f vb = new Vector3f(x, 0, z);
+        Vector3f vc = new Vector3f(offset, y, z);
+        Vector3f vd = new Vector3f(-x, 0, 0);
+        Vector3f ve = new Vector3f(x, 0, 0);
+        Vector3f vf = new Vector3f(offset, y, 0);
 
         // texCoord
         Vector2f ta = new Vector2f(0, 0);
@@ -196,7 +195,6 @@ public class Prism implements MeshBuilder {
         mesh.setBuffer(Type.Normal, 3, BufferUtils.createFloatBuffer(normal));
         mesh.setBuffer(Type.TexCoord, 2, BufferUtils.createFloatBuffer(texCoord));
         mesh.setBuffer(Type.Index, 3, BufferUtils.createShortBuffer(index));
-        mesh.setMode(Mode.Triangles);
         mesh.setStatic();
         mesh.updateBound();
         mesh.updateCounts();

@@ -1,4 +1,4 @@
-package net.jmecn.tut.movement;
+package net.jmecn.tut.scene;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.TextureKey;
@@ -7,14 +7,16 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.material.Materials;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
 
-import net.jmecn.tut.movement.shape.Plane;
-import net.jmecn.tut.movement.shape.Plane.Axis;
-import net.jmecn.tut.movement.shape.Prism;
+import net.jmecn.tut.scene.shape.Plane;
+import net.jmecn.tut.scene.shape.Plane.Axis;
+import net.jmecn.tut.scene.shape.Prism;
 
 /**
  * @title TestMeshBuilder
@@ -27,12 +29,11 @@ public class TestMeshBuilder extends SimpleApplication {
     @Override
     public void simpleInitApp() {
         viewPort.setBackgroundColor(new ColorRGBA(0.7f, 0.8f, 0.9f, 1f));
-        Prism p = new Prism();
-        p.setX(10f);
-        p.setY(4f);
-        p.setZ(3f);
 
-        TextureKey tk = new TextureKey("/Textures/grid.png");
+        cam.setLocation(new Vector3f(48.559017f, 70.967674f, 57.164276f));
+        cam.setRotation(new Quaternion(-0.06531386f, 0.8960698f, -0.41592395f, -0.14071321f));
+
+        TextureKey tk = new TextureKey("Textures/grid.png");
         tk.setGenerateMips(true);
         tk.setAnisotropy(4);
         Texture texture = assetManager.loadTexture(tk);
@@ -60,28 +61,38 @@ public class TestMeshBuilder extends SimpleApplication {
         green.setBoolean("UseMaterialColors", true);
 
         int n = 0;
-        for (int i = 0; i < 5; i++) {
-            p.setOffset(i);
+        Prism p = new Prism();
+        p.setX(10f);
+        p.setY(10f);
+        p.setZ(3f);
+        for (int i = 0; i < 20; i++) {
+            if (i < 10) {
+                p.setOffset(i - 10);
+            } else {
+                p.setOffset(0);
+                p.setY(20 - i);
+            }
             Geometry geom = new Geometry("p"+i, p.build());
 
             if (n % 2 == 0) {
-                geom.setMaterial(white);
-            } else {
                 geom.setMaterial(yellow);
+            } else {
+                geom.setMaterial(white);
             }
             n++;
 
-            geom.setLocalTranslation(0, 0, i* 3);
+            geom.rotate(0, FastMath.HALF_PI, 0);
+            geom.setLocalTranslation(i*3, 0, 0);
             rootNode.attachChild(geom);
         }
 
         Plane plane = new Plane();
-        plane.setX(26);
-        plane.setY(40);
+        plane.setX(69);
+        plane.setY(45);
         plane.setAxis(Axis.Y);
         Geometry geom = new Geometry("gy", plane.build());
         geom.setMaterial(green);
-        geom.setLocalTranslation(-13, 0, 20);
+        geom.setLocalTranslation(-3, 0, 25);
         rootNode.attachChild(geom);
 
         flyCam.setEnabled(true);
@@ -90,12 +101,13 @@ public class TestMeshBuilder extends SimpleApplication {
         // lighting
         DirectionalLight dl = new DirectionalLight();
         dl.setColor(ColorRGBA.White.mult(0.3f));
-        dl.setDirection(new Vector3f(-3, -4, -5).normalizeLocal());
+        dl.setDirection(new Vector3f(-1, -5, 1).normalizeLocal());
         rootNode.addLight(dl);
         
         AmbientLight al = new AmbientLight();
         al.setColor(ColorRGBA.White.mult(0.7f));
         rootNode.addLight(al);
+
     }
 
     public static void main(String[] args) {

@@ -1,9 +1,8 @@
-package net.jmecn.tut.movement.shape;
+package net.jmecn.tut.scene.shape;
 
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Mesh;
-import com.jme3.scene.Mesh.Mode;
 import com.jme3.scene.VertexBuffer.Type;
 import com.jme3.util.BufferUtils;
 
@@ -57,18 +56,39 @@ public class Plane implements MeshBuilder {
 
     @Override
     public Mesh build() {
+
+        Mesh mesh = new Mesh();
+        mesh.setStatic();
+
         switch (axis) {
             case X:
-                return axisX();
+                axisX(mesh);
+                break;
             case Y:
-                return axisY();
+                axisY(mesh);
+                break;
             case Z:
-                return axisZ();
+                axisZ(mesh);
+                break;
         }
-        return null;
+
+        Vector2f ta = new Vector2f(0, 0);
+        Vector2f tb = new Vector2f(x, 0);
+        Vector2f tc = new Vector2f(0, y);
+        Vector2f td = new Vector2f(x, y);
+        Vector2f[] texCoord = { ta, tb, tc, tb, td, tc, };
+
+        short[] index = { 0, 1, 2, 3, 4, 5 };
+
+        mesh.setBuffer(Type.TexCoord, 2, BufferUtils.createFloatBuffer(texCoord));
+        mesh.setBuffer(Type.Index, 3, BufferUtils.createShortBuffer(index));
+
+        mesh.updateBound();
+        mesh.updateCounts();
+        return mesh;
     }
 
-    private Mesh axisZ() {
+    private Mesh axisZ(Mesh mesh) {
         Vector3f va = new Vector3f(0, 0, 0);
         Vector3f vb = new Vector3f(x, 0, 0);
         Vector3f vc = new Vector3f(0, y, 0);
@@ -78,58 +98,27 @@ public class Plane implements MeshBuilder {
         Vector3f n = new Vector3f(0, 0, 1);
         Vector3f[] normal = { n, n, n, n, n, n };
 
-        Vector2f ta = new Vector2f(0, 0);
-        Vector2f tb = new Vector2f(x, 0);
-        Vector2f tc = new Vector2f(0, y);
-        Vector2f td = new Vector2f(x, y);
-        Vector2f[] texCoord = { ta, tb, tc, tb, td, tc, };
-
-        short[] index = { 0, 1, 2, 3, 4, 5 };
-
-        Mesh mesh = new Mesh();
         mesh.setBuffer(Type.Position, 3, BufferUtils.createFloatBuffer(vertex));
         mesh.setBuffer(Type.Normal, 3, BufferUtils.createFloatBuffer(normal));
-        mesh.setBuffer(Type.TexCoord, 2, BufferUtils.createFloatBuffer(texCoord));
-        mesh.setBuffer(Type.Index, 3, BufferUtils.createShortBuffer(index));
-        mesh.setMode(Mode.Triangles);
-        mesh.setStatic();
-        mesh.updateBound();
-        mesh.updateCounts();
 
         return mesh;
     }
 
-    private Mesh axisX() {
+    private Mesh axisX(Mesh mesh) {
         Vector3f va = new Vector3f(0, 0, 0);
         Vector3f vb = new Vector3f(0, 0, -x);
         Vector3f vc = new Vector3f(0, y, 0);
         Vector3f vd = new Vector3f(0, y, -x);
         Vector3f[] vertex = { va, vb, vc, vb, vd, vc };
-        
+
         Vector3f n = new Vector3f(0, 1, 0);
         Vector3f[] normal = { n, n, n, n, n, n };
-        
-        Vector2f ta = new Vector2f(0, 0);
-        Vector2f tb = new Vector2f(x, 0);
-        Vector2f tc = new Vector2f(0, y);
-        Vector2f td = new Vector2f(x, y);
-        Vector2f[] texCoord = { ta, tb, tc, tb, td, tc, };
-        
-        short[] index = { 0, 1, 2, 3, 4, 5 };
-        
-        Mesh mesh = new Mesh();
         mesh.setBuffer(Type.Position, 3, BufferUtils.createFloatBuffer(vertex));
         mesh.setBuffer(Type.Normal, 3, BufferUtils.createFloatBuffer(normal));
-        mesh.setBuffer(Type.TexCoord, 2, BufferUtils.createFloatBuffer(texCoord));
-        mesh.setBuffer(Type.Index, 3, BufferUtils.createShortBuffer(index));
-        mesh.setMode(Mode.Triangles);
-        mesh.setStatic();
-        mesh.updateBound();
-        mesh.updateCounts();
-        
         return mesh;
     }
-    private Mesh axisY() {
+
+    private Mesh axisY(Mesh mesh) {
         Vector3f va = new Vector3f(0, 0, 0);
         Vector3f vb = new Vector3f(x, 0, 0);
         Vector3f vc = new Vector3f(0, 0, -y);
@@ -139,24 +128,8 @@ public class Plane implements MeshBuilder {
         Vector3f n = new Vector3f(0, 1, 0);
         Vector3f[] normal = { n, n, n, n, n, n };
 
-        Vector2f ta = new Vector2f(0, 0);
-        Vector2f tb = new Vector2f(x, 0);
-        Vector2f tc = new Vector2f(0, y);
-        Vector2f td = new Vector2f(x, y);
-        Vector2f[] texCoord = { ta, tb, tc, tb, td, tc, };
-
-        short[] index = { 0, 1, 2, 3, 4, 5 };
-
-        Mesh mesh = new Mesh();
         mesh.setBuffer(Type.Position, 3, BufferUtils.createFloatBuffer(vertex));
         mesh.setBuffer(Type.Normal, 3, BufferUtils.createFloatBuffer(normal));
-        mesh.setBuffer(Type.TexCoord, 2, BufferUtils.createFloatBuffer(texCoord));
-        mesh.setBuffer(Type.Index, 3, BufferUtils.createShortBuffer(index));
-        mesh.setMode(Mode.Triangles);
-        mesh.setStatic();
-        mesh.updateBound();
-        mesh.updateCounts();
-
         return mesh;
     }
 }

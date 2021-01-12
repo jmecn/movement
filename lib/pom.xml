@@ -21,5 +21,10 @@
             <artifactId>jme3-lwjgl</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-effects</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
