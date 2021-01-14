@@ -7,7 +7,6 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.material.Materials;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -16,7 +15,7 @@ import com.jme3.texture.Texture.WrapMode;
 
 import net.jmecn.tut.scene.shape.Plane;
 import net.jmecn.tut.scene.shape.Plane.Axis;
-import net.jmecn.tut.scene.shape.Prism;
+import net.jmecn.tut.scene.shape.Stair;
 
 /**
  * @title TestMeshBuilder
@@ -24,7 +23,7 @@ import net.jmecn.tut.scene.shape.Prism;
  * @date 2021年1月11日
  * @version 1.0
  */
-public class TestMeshBuilder extends SimpleApplication {
+public class TestSlope extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
@@ -45,14 +44,14 @@ public class TestMeshBuilder extends SimpleApplication {
         yellow.setColor("Specular", ColorRGBA.White);
         yellow.setTexture("DiffuseMap", texture);
         yellow.setBoolean("UseMaterialColors", true);
-        
+
         Material white = new Material(assetManager, Materials.LIGHTING);
         white.setColor("Diffuse", ColorRGBA.White);
         white.setColor("Ambient", ColorRGBA.White);
         white.setColor("Specular", ColorRGBA.White);
         white.setTexture("DiffuseMap", texture);
         white.setBoolean("UseMaterialColors", true);
-        
+
         Material green = new Material(assetManager, Materials.LIGHTING);
         green.setColor("Diffuse", new ColorRGBA(0.7f, 1f, 0.7f, 1f));
         green.setColor("Ambient", new ColorRGBA(0.7f, 1f, 0.7f, 1f));
@@ -61,18 +60,14 @@ public class TestMeshBuilder extends SimpleApplication {
         green.setBoolean("UseMaterialColors", true);
 
         int n = 0;
-        Prism p = new Prism();
-        p.setX(10f);
-        p.setY(10f);
-        p.setZ(3f);
-        for (int i = 0; i < 20; i++) {
-            if (i < 10) {
-                p.setOffset(i - 10);
-            } else {
-                p.setOffset(0);
-                p.setY(20 - i);
-            }
-            Geometry geom = new Geometry("p"+i, p.build());
+        Stair p = new Stair();
+        p.setX(3);
+        p.setY(3);
+        p.setZ(6);
+        p.setBuildSide(true);
+        for (int i = 0; i <= 6; i++) {
+            p.setSteps(6 + i);
+            Geometry geom = new Geometry("pst" + i, p.build());
 
             if (n % 2 == 0) {
                 geom.setMaterial(yellow);
@@ -81,27 +76,29 @@ public class TestMeshBuilder extends SimpleApplication {
             }
             n++;
 
-            geom.rotate(0, FastMath.HALF_PI, 0);
-            geom.setLocalTranslation(i*3, 0, 0);
+            geom.setLocalTranslation(i * 7, 0, 0);
             rootNode.attachChild(geom);
+
+            Geometry geom2 = new Geometry("psl" + i, p.buildSlope());
+            
+            if (n % 2 == 0) {
+                geom2.setMaterial(yellow);
+            } else {
+                geom2.setMaterial(white);
+            }
+            n++;
+            
+            geom2.setLocalTranslation(i * 7 + 3, 0, 0);
+            rootNode.attachChild(geom2);
         }
 
         Plane plane = new Plane();
-        plane.setX(70);
+        plane.setX(120);
         plane.setY(50);
         plane.setAxis(Axis.Y);
         Geometry geom = new Geometry("gy", plane.build());
         geom.setMaterial(green);
-        rootNode.attachChild(geom);
-
-        plane.setAxis(Axis.X);
-        geom = new Geometry("gx", plane.build());
-        geom.setMaterial(green);
-        rootNode.attachChild(geom);
-
-        plane.setAxis(Axis.Z);
-        geom = new Geometry("gz", plane.build());
-        geom.setMaterial(green);
+        geom.setLocalTranslation(0, 0, 0);
         rootNode.attachChild(geom);
 
         flyCam.setEnabled(true);
@@ -109,18 +106,18 @@ public class TestMeshBuilder extends SimpleApplication {
 
         // lighting
         DirectionalLight dl = new DirectionalLight();
-        dl.setColor(ColorRGBA.White.mult(0.3f));
-        dl.setDirection(new Vector3f(-1, -5, 2).normalizeLocal());
+        dl.setColor(ColorRGBA.White.mult(0.5f));
+        dl.setDirection(new Vector3f(-3, -2, 3).normalizeLocal());
         rootNode.addLight(dl);
 
         AmbientLight al = new AmbientLight();
-        al.setColor(ColorRGBA.White.mult(0.7f));
+        al.setColor(ColorRGBA.White.mult(0.5f));
         rootNode.addLight(al);
 
     }
 
     public static void main(String[] args) {
-        TestMeshBuilder app = new TestMeshBuilder();
+        TestSlope app = new TestSlope();
         app.start();
     }
 

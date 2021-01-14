@@ -157,7 +157,7 @@ public class Physics extends SimpleApplication implements ActionListener {
         
         pSpace.add(rigidBody);
     }
-    
+
     @Override
     public void simpleUpdate(float tpf) {
         float step = tpf * inputSensitive;

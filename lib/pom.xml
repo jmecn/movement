@@ -15,6 +15,7 @@
         <dependency>
             <groupId>org.jmonkeyengine</groupId>
             <artifactId>jme3-desktop</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jmonkeyengine</groupId>

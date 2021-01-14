@@ -11,4 +11,5 @@ import com.jme3.scene.Mesh;
 public interface MeshBuilder {
 
     Mesh build();
+
 }

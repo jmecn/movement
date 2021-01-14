@@ -251,8 +251,8 @@ public class Stair implements MeshBuilder {
         int dv = 2;
         int quadCount = steps * 2;
         if (buildSide) {
-            quadCount += steps * 3 + 1;
-            dv += 3;
+            quadCount += steps * 2 + 2;
+            dv += 2;
         }
 
         int vcount = quadCount * 4;
@@ -333,115 +333,118 @@ public class Stair implements MeshBuilder {
             idxFB.put(f0).put(f1).put(f2);
             idxFB.put(f1).put(f3).put(f2);
 
-            if (!buildSide) {
-                continue;
+            if (buildSide) {
+                // right/inner side
+                // v0 x1 0 z0
+                // v1 x1 0 z1
+                // v2 x1 y1 z0
+                // v3 x1 y1 z1
+                vertFB.put(x1).put(0).put(-z0);
+                vertFB.put(x1).put(0).put(-z1);
+                vertFB.put(x1).put(y1).put(-z0);
+                vertFB.put(x1).put(y1).put(-z1);
+
+                texFB.put(z0).put(0);
+                texFB.put(z1).put(0);
+                texFB.put(z0).put(y1);
+                texFB.put(z1).put(y1);
+
+                normFB.put(1).put(0).put(0);
+                normFB.put(1).put(0).put(0);
+                normFB.put(1).put(0).put(0);
+                normFB.put(1).put(0).put(0);
+
+                int r0 = idx + 8;
+                int r1 = idx + 9;
+                int r2 = idx + 10;
+                int r3 = idx + 11;
+
+                idxFB.put(r0).put(r1).put(r2);
+                idxFB.put(r1).put(r3).put(r2);
+
+                // left/outer side
+                // v0 x0 0 z0
+                // v1 x0 0 z1
+                // v2 x0 y1 z0
+                // v3 x0 y1 z1
+                vertFB.put(x0).put(0).put(-z0);
+                vertFB.put(x0).put(0).put(-z1);
+                vertFB.put(x0).put(y1).put(-z0);
+                vertFB.put(x0).put(y1).put(-z1);
+
+                texFB.put(z0).put(0);
+                texFB.put(z1).put(0);
+                texFB.put(z0).put(y1);
+                texFB.put(z1).put(y1);
+
+                normFB.put(-1).put(0).put(0);
+                normFB.put(-1).put(0).put(0);
+                normFB.put(-1).put(0).put(0);
+                normFB.put(-1).put(0).put(0);
+
+                int l0 = idx + 12;
+                int l1 = idx + 13;
+                int l2 = idx + 14;
+                int l3 = idx + 15;
+
+                idxFB.put(l0).put(l2).put(l1);
+                idxFB.put(l1).put(l2).put(l3);
+
             }
 
-            // right/inner side
-            // v0 x1 0 z0
-            // v1 x1 0 z1
-            // v2 x1 y1 z0
-            // v3 x1 y1 z1
-            vertFB.put(x1).put(0).put(-z0);
-            vertFB.put(x1).put(0).put(-z1);
-            vertFB.put(x1).put(y1).put(-z0);
-            vertFB.put(x1).put(y1).put(-z1);
+        }
 
-            texFB.put(z0).put(0);
-            texFB.put(z1).put(0);
-            texFB.put(z0).put(y1);
-            texFB.put(z1).put(y1);
-
-            normFB.put(1).put(0).put(0);
-            normFB.put(1).put(0).put(0);
-            normFB.put(1).put(0).put(0);
-            normFB.put(1).put(0).put(0);
-
-            int r0 = idx + 8;
-            int r1 = idx + 9;
-            int r2 = idx + 10;
-            int r3 = idx + 11;
-
-            idxFB.put(r0).put(r1).put(r2);
-            idxFB.put(r1).put(r3).put(r2);
-
-            // left/outer side
-            // v0 x0 0 z0
-            // v1 x0 0 z1
-            // v2 x0 y1 z0
-            // v3 x0 y1 z1
-            vertFB.put(x0).put(0).put(-z0);
-            vertFB.put(x0).put(0).put(-z1);
-            vertFB.put(x0).put(y1).put(-z0);
-            vertFB.put(x0).put(y1).put(-z1);
-
-            texFB.put(z0).put(0);
-            texFB.put(z1).put(0);
-            texFB.put(z0).put(y1);
-            texFB.put(z1).put(y1);
-
-            normFB.put(-1).put(0).put(0);
-            normFB.put(-1).put(0).put(0);
-            normFB.put(-1).put(0).put(0);
-            normFB.put(-1).put(0).put(0);
-
-            int l0 = idx + 12;
-            int l1 = idx + 13;
-            int l2 = idx + 14;
-            int l3 = idx + 15;
-
-            idxFB.put(l0).put(l2).put(l1);
-            idxFB.put(l1).put(l2).put(l3);
+        if (buildSide) {
+            int idx = steps * dv * 4;
 
             // bottom
-            vertFB.put(x0).put(0).put(-z0);
-            vertFB.put(x1).put(0).put(-z0);
-            vertFB.put(x0).put(0).put(-z1);
-            vertFB.put(x1).put(0).put(-z1);
+            vertFB.put(0).put(0).put(0);
+            vertFB.put(x).put(0).put(0);
+            vertFB.put(0).put(0).put(-z);
+            vertFB.put(x).put(0).put(-z);
 
-            texFB.put(x0).put(z0);
-            texFB.put(x1).put(z0);
-            texFB.put(x0).put(z1);
-            texFB.put(x1).put(z1);
+            texFB.put(0).put(0);
+            texFB.put(x).put(0);
+            texFB.put(0).put(z);
+            texFB.put(x).put(z);
 
             normFB.put(0).put(-1).put(0);
             normFB.put(0).put(-1).put(0);
             normFB.put(0).put(-1).put(0);
             normFB.put(0).put(-1).put(0);
 
-            int b0 = idx + 16;
-            int b1 = idx + 17;
-            int b2 = idx + 18;
-            int b3 = idx + 19;
+            int b0 = idx + 0;
+            int b1 = idx + 1;
+            int b2 = idx + 2;
+            int b3 = idx + 3;
 
             idxFB.put(b0).put(b2).put(b1);
             idxFB.put(b1).put(b2).put(b3);
+
+            // end
+            vertFB.put(0).put(0).put(-z);
+            vertFB.put(x).put(0).put(-z);
+            vertFB.put(0).put(y).put(-z);
+            vertFB.put(x).put(y).put(-z);
+
+            texFB.put(0).put(0);
+            texFB.put(x).put(0);
+            texFB.put(0).put(y);
+            texFB.put(x).put(y);
+
+            normFB.put(0).put(0).put(-1);
+            normFB.put(0).put(0).put(-1);
+            normFB.put(0).put(0).put(-1);
+            normFB.put(0).put(0).put(-1);
+
+            int e0 = idx + 4;
+            int e1 = idx + 5;
+            int e2 = idx + 6;
+            int e3 = idx + 7;
+
+            idxFB.put(e0).put(e2).put(e1);
+            idxFB.put(e1).put(e2).put(e3);
         }
-
-        // end
-        vertFB.put(0).put(0).put(-z);
-        vertFB.put(x).put(0).put(-z);
-        vertFB.put(0).put(y).put(-z);
-        vertFB.put(x).put(y).put(-z);
-
-        texFB.put(0).put(0);
-        texFB.put(x).put(0);
-        texFB.put(0).put(y);
-        texFB.put(x).put(y);
-
-        normFB.put(0).put(0).put(-1);
-        normFB.put(0).put(0).put(-1);
-        normFB.put(0).put(0).put(-1);
-        normFB.put(0).put(0).put(-1);
-
-        int idx = steps * dv * 4;
-        int e0 = idx + 0;
-        int e1 = idx + 1;
-        int e2 = idx + 2;
-        int e3 = idx + 3;
-
-        idxFB.put(e0).put(e2).put(e1);
-        idxFB.put(e1).put(e2).put(e3);
 
         // VB
         mesh.setBuffer(Type.Position, 3, vertFB);
@@ -468,7 +471,6 @@ public class Stair implements MeshBuilder {
         IntBuffer idxFB = BufferUtils.createIntBuffer(icount);
 
         float dy = y / steps;
-        float dz = y / steps;
 
         float innerRadius = z * FastMath.RAD_TO_DEG / curvature;
         float outerRadius = x + innerRadius;
@@ -476,13 +478,13 @@ public class Stair implements MeshBuilder {
         float radian = FastMath.DEG_TO_RAD * curvature;
         float stepRadian = radian / steps;
 
+        float dzr = z / steps;
+        float dzl = outerRadius * stepRadian;
+
         float sin = FastMath.sin(stepRadian);
         float cos = FastMath.cos(stepRadian);
 
-        Matrix3f rotate = new Matrix3f(
-            cos, 0, -sin,
-            0,   1, 0,
-            sin, 0, cos);
+        Matrix3f rotate = new Matrix3f(cos, 0, -sin, 0, 1, 0, sin, 0, cos);
 
         Vector3f v0 = new Vector3f(-outerRadius, 0, 0);
         Vector3f v1 = new Vector3f(-innerRadius, 0, 0);
@@ -490,11 +492,16 @@ public class Stair implements MeshBuilder {
         Vector3f v2 = new Vector3f();
         Vector3f v3 = new Vector3f();
 
+        // normal vector point to the center
+        Vector3f n0 = new Vector3f(1, 0, 0);
+        Vector3f n1 = new Vector3f();
+
         for (int i = 0; i < steps; i++) {
             int idx = i * dv * 4;
 
             rotate.mult(v0, v2);
             rotate.mult(v1, v3);
+            rotate.mult(n0, n1);
 
             float x0 = 0;
             float x1 = x;
@@ -502,8 +509,11 @@ public class Stair implements MeshBuilder {
             float y0 = i * dy;
             float y1 = y0 + dy;
 
-            float z0 = i * dz;
-            float z1 = z0 + dz;
+            float zr0 = i * dzr;
+            float zr1 = zr0 + dzr;
+
+            float zl0 = i * dzl;
+            float zl1 = zl0 + dzl;
 
             // top
             // v0 x0, y1, -z0
@@ -517,8 +527,8 @@ public class Stair implements MeshBuilder {
 
             texFB.put(x0).put(0);
             texFB.put(x1).put(0);
-            texFB.put(x0).put(dz);
-            texFB.put(x1).put(dz);
+            texFB.put(x0).put(dzr);
+            texFB.put(x1).put(dzr);
 
             normFB.put(0).put(1).put(0);
             normFB.put(0).put(1).put(0);
@@ -548,10 +558,10 @@ public class Stair implements MeshBuilder {
             texFB.put(x0).put(y1);
             texFB.put(x1).put(y1);
 
-            normFB.put(0).put(0).put(1);
-            normFB.put(0).put(0).put(1);
-            normFB.put(0).put(0).put(1);
-            normFB.put(0).put(0).put(1);
+            normFB.put(-n0.z).put(0).put(n0.x);
+            normFB.put(-n0.z).put(0).put(n0.x);
+            normFB.put(-n0.z).put(0).put(n0.x);
+            normFB.put(-n0.z).put(0).put(n0.x);
 
             int f0 = idx + 4;
             int f1 = idx + 5;
@@ -561,100 +571,332 @@ public class Stair implements MeshBuilder {
             idxFB.put(f0).put(f1).put(f2);
             idxFB.put(f1).put(f3).put(f2);
 
-            if (!buildSide) {
-                continue;
+            if (buildSide) {
+
+                // right/inner side
+                // v0 x1 0 z0
+                // v1 x1 0 z1
+                // v2 x1 y1 z0
+                // v3 x1 y1 z1
+                vertFB.put(v1.x + outerRadius).put(0).put(v1.z);
+                vertFB.put(v3.x + outerRadius).put(0).put(v3.z);
+                vertFB.put(v1.x + outerRadius).put(y1).put(v1.z);
+                vertFB.put(v3.x + outerRadius).put(y1).put(v3.z);
+
+                texFB.put(zr0).put(0);
+                texFB.put(zr1).put(0);
+                texFB.put(zr0).put(y1);
+                texFB.put(zr1).put(y1);
+
+                normFB.put(n0.x).put(0).put(n0.z);
+                normFB.put(n1.x).put(0).put(n1.z);
+                normFB.put(n0.x).put(0).put(n0.z);
+                normFB.put(n1.x).put(0).put(n1.z);
+
+                int r0 = idx + 8;
+                int r1 = idx + 9;
+                int r2 = idx + 10;
+                int r3 = idx + 11;
+
+                idxFB.put(r0).put(r1).put(r2);
+                idxFB.put(r1).put(r3).put(r2);
+
+                // left/outer side
+                // v0 x0 0 z0
+                // v1 x0 0 z1
+                // v2 x0 y1 z0
+                // v3 x0 y1 z1
+                vertFB.put(v0.x + outerRadius).put(0).put(v0.z);
+                vertFB.put(v2.x + outerRadius).put(0).put(v2.z);
+                vertFB.put(v0.x + outerRadius).put(y1).put(v0.z);
+                vertFB.put(v2.x + outerRadius).put(y1).put(v2.z);
+
+                texFB.put(zl0).put(0);
+                texFB.put(zl1).put(0);
+                texFB.put(zl0).put(y1);
+                texFB.put(zl1).put(y1);
+
+                normFB.put(-n0.x).put(0).put(-n0.z);
+                normFB.put(-n1.x).put(0).put(-n1.z);
+                normFB.put(-n0.x).put(0).put(-n0.z);
+                normFB.put(-n1.x).put(0).put(-n1.z);
+
+                int l0 = idx + 12;
+                int l1 = idx + 13;
+                int l2 = idx + 14;
+                int l3 = idx + 15;
+
+                idxFB.put(l0).put(l2).put(l1);
+                idxFB.put(l1).put(l2).put(l3);
+
+                // bottom
+                vertFB.put(v0.x + outerRadius).put(0).put(v0.z);
+                vertFB.put(v1.x + outerRadius).put(0).put(v1.z);
+                vertFB.put(v2.x + outerRadius).put(0).put(v2.z);
+                vertFB.put(v3.x + outerRadius).put(0).put(v3.z);
+
+                texFB.put(x0).put(zr0);
+                texFB.put(x1).put(zr0);
+                texFB.put(x0).put(zr1);
+                texFB.put(x1).put(zr1);
+
+                normFB.put(0).put(-1).put(0);
+                normFB.put(0).put(-1).put(0);
+                normFB.put(0).put(-1).put(0);
+                normFB.put(0).put(-1).put(0);
+
+                int b0 = idx + 16;
+                int b1 = idx + 17;
+                int b2 = idx + 18;
+                int b3 = idx + 19;
+
+                idxFB.put(b0).put(b2).put(b1);
+                idxFB.put(b1).put(b2).put(b3);
             }
-
-            // right/inner side
-            // v0 x1 0 z0
-            // v1 x1 0 z1
-            // v2 x1 y1 z0
-            // v3 x1 y1 z1
-            vertFB.put(v1.x + outerRadius).put(0).put(v1.z);
-            vertFB.put(v3.x + outerRadius).put(0).put(v3.z);
-            vertFB.put(v1.x + outerRadius).put(y1).put(v1.z);
-            vertFB.put(v3.x + outerRadius).put(y1).put(v3.z);
-
-            texFB.put(z0).put(0);
-            texFB.put(z1).put(0);
-            texFB.put(z0).put(y1);
-            texFB.put(z1).put(y1);
-
-            normFB.put(1).put(0).put(0);
-            normFB.put(1).put(0).put(0);
-            normFB.put(1).put(0).put(0);
-            normFB.put(1).put(0).put(0);
-
-            int r0 = idx + 8;
-            int r1 = idx + 9;
-            int r2 = idx + 10;
-            int r3 = idx + 11;
-
-            idxFB.put(r0).put(r1).put(r2);
-            idxFB.put(r1).put(r3).put(r2);
-
-            // left/outer side
-            // v0 x0 0 z0
-            // v1 x0 0 z1
-            // v2 x0 y1 z0
-            // v3 x0 y1 z1
-            vertFB.put(v0.x + outerRadius).put(0).put(v0.z);
-            vertFB.put(v2.x + outerRadius).put(0).put(v2.z);
-            vertFB.put(v0.x + outerRadius).put(y1).put(v0.z);
-            vertFB.put(v2.x + outerRadius).put(y1).put(v2.z);
-
-            texFB.put(z0).put(0);
-            texFB.put(z1).put(0);
-            texFB.put(z0).put(y1);
-            texFB.put(z1).put(y1);
-
-            normFB.put(-1).put(0).put(0);
-            normFB.put(-1).put(0).put(0);
-            normFB.put(-1).put(0).put(0);
-            normFB.put(-1).put(0).put(0);
-
-            int l0 = idx + 12;
-            int l1 = idx + 13;
-            int l2 = idx + 14;
-            int l3 = idx + 15;
-
-            idxFB.put(l0).put(l2).put(l1);
-            idxFB.put(l1).put(l2).put(l3);
-
-            // bottom
-            vertFB.put(v0.x + outerRadius).put(0).put(v0.z);
-            vertFB.put(v1.x + outerRadius).put(0).put(v1.z);
-            vertFB.put(v2.x + outerRadius).put(0).put(v2.z);
-            vertFB.put(v3.x + outerRadius).put(0).put(v3.z);
-
-            texFB.put(x0).put(z0);
-            texFB.put(x1).put(z0);
-            texFB.put(x0).put(z1);
-            texFB.put(x1).put(z1);
-
-            normFB.put(0).put(-1).put(0);
-            normFB.put(0).put(-1).put(0);
-            normFB.put(0).put(-1).put(0);
-            normFB.put(0).put(-1).put(0);
-
-            int b0 = idx + 16;
-            int b1 = idx + 17;
-            int b2 = idx + 18;
-            int b3 = idx + 19;
-
-            idxFB.put(b0).put(b2).put(b1);
-            idxFB.put(b1).put(b2).put(b3);
 
             v0.set(v2);
             v1.set(v3);
-            
+            n0.set(n1);
         }
 
+        if (buildSide) {
+            // end
+            vertFB.put(v2.x + outerRadius).put(0).put(v2.z);
+            vertFB.put(v3.x + outerRadius).put(0).put(v3.z);
+            vertFB.put(v2.x + outerRadius).put(y).put(v2.z);
+            vertFB.put(v3.x + outerRadius).put(y).put(v3.z);
+
+            texFB.put(0).put(0);
+            texFB.put(x).put(0);
+            texFB.put(0).put(y);
+            texFB.put(x).put(y);
+
+            normFB.put(n0.z).put(0).put(-n0.x);
+            normFB.put(n0.z).put(0).put(-n0.x);
+            normFB.put(n0.z).put(0).put(-n0.x);
+            normFB.put(n0.z).put(0).put(-n0.x);
+
+            int idx = steps * dv * 4;
+            int e0 = idx + 0;
+            int e1 = idx + 1;
+            int e2 = idx + 2;
+            int e3 = idx + 3;
+
+            idxFB.put(e0).put(e2).put(e1);
+            idxFB.put(e1).put(e2).put(e3);
+        }
+
+        // VB
+        mesh.setBuffer(Type.Position, 3, vertFB);
+        mesh.setBuffer(Type.Normal, 3, normFB);
+        mesh.setBuffer(Type.TexCoord, 2, texFB);
+        mesh.setBuffer(Type.Index, 3, idxFB);
+
+        return mesh;
+    }
+
+    public Mesh buildSlope() {
+        Mesh mesh = new Mesh();
+        mesh.setStatic();
+
+        if (curvature == 0) {
+            straightSlope(mesh);
+        } else {
+            curvatureStair(mesh);
+        }
+
+        mesh.updateCounts();
+        mesh.updateBound();
+
+        return mesh;
+    }
+
+    private Mesh straightSlope(Mesh mesh) {
+        Vector3f n = new Vector3f(0, z, y);
+        float length = n.length();
+        n.normalizeLocal();
+
+        float dz = z / steps;
+        float halfDz = dz * 0.5f;
+
+        int quadCount = 7;
+        int vcount = quadCount * 4 + 2;
+        int icount = quadCount * 6;
+        FloatBuffer vertFB = BufferUtils.createFloatBuffer(vcount * 3);
+        FloatBuffer normFB = BufferUtils.createFloatBuffer(vcount * 3);
+        FloatBuffer texFB = BufferUtils.createFloatBuffer(vcount * 2);
+        IntBuffer idxFB = BufferUtils.createIntBuffer(icount);
+
+        int idx = 0;
+
+        // front
+        vertFB.put(0).put(0).put(halfDz);
+        vertFB.put(x).put(0).put(halfDz);
+        vertFB.put(0).put(y).put(-z + halfDz);
+        vertFB.put(x).put(y).put(-z + halfDz);
+
+        texFB.put(0).put(0);
+        texFB.put(1).put(0);
+        texFB.put(0).put(length);
+        texFB.put(1).put(length);
+
+        normFB.put(0).put(n.y).put(n.z);
+        normFB.put(0).put(n.y).put(n.z);
+        normFB.put(0).put(n.y).put(n.z);
+        normFB.put(0).put(n.y).put(n.z);
+
+        int f0 = idx + 0;
+        int f1 = idx + 1;
+        int f2 = idx + 2;
+        int f3 = idx + 3;
+        idx += 4;
+
+        idxFB.put(f0).put(f1).put(f2);
+        idxFB.put(f1).put(f3).put(f2);
+
+        // top
+        vertFB.put(0).put(y).put(-z + halfDz);
+        vertFB.put(x).put(y).put(-z + halfDz);
+        vertFB.put(0).put(y).put(-z);
+        vertFB.put(x).put(y).put(-z);
+
+        texFB.put(0).put(1 - halfDz);
+        texFB.put(1).put(1 - halfDz);
+        texFB.put(0).put(1);
+        texFB.put(1).put(1);
+
+        normFB.put(0).put(1).put(0);
+        normFB.put(0).put(1).put(0);
+        normFB.put(0).put(1).put(0);
+        normFB.put(0).put(1).put(0);
+
+        int t0 = idx + 0;
+        int t1 = idx + 1;
+        int t2 = idx + 2;
+        int t3 = idx + 3;
+        idx += 4;
+
+        idxFB.put(t0).put(t1).put(t2);
+        idxFB.put(t1).put(t3).put(t2);
+
+        // right/inner side
+        vertFB.put(x).put(0).put(-z + halfDz);
+        vertFB.put(x).put(0).put(-z);
+        vertFB.put(x).put(y).put(-z + halfDz);
+        vertFB.put(x).put(y).put(-z);
+
+        texFB.put(1 - halfDz).put(0);
+        texFB.put(1).put(0);
+        texFB.put(1 - halfDz).put(y);
+        texFB.put(1).put(y);
+
+        normFB.put(1).put(0).put(0);
+        normFB.put(1).put(0).put(0);
+        normFB.put(1).put(0).put(0);
+        normFB.put(1).put(0).put(0);
+
+        int r0 = idx + 0;
+        int r1 = idx + 1;
+        int r2 = idx + 2;
+        int r3 = idx + 3;
+        idx += 4;
+
+        idxFB.put(r0).put(r1).put(r2);
+        idxFB.put(r1).put(r3).put(r2);
+
+        vertFB.put(x).put(0).put(halfDz);
+        vertFB.put(x).put(0).put(-z + halfDz);
+        vertFB.put(x).put(y).put(-z + halfDz);
+
+        texFB.put(0).put(0);
+        texFB.put(z).put(0);
+        texFB.put(z).put(y);
+
+        normFB.put(1).put(0).put(0);
+        normFB.put(1).put(0).put(0);
+        normFB.put(1).put(0).put(0);
+        
+        int r4 = idx + 0;
+        int r5 = idx + 1;
+        int r6 = idx + 2;
+        idx += 3;
+
+        idxFB.put(r4).put(r5).put(r6);
+        
+        // left/outer side
+        vertFB.put(0).put(0).put(-z + halfDz);
+        vertFB.put(0).put(0).put(-z);
+        vertFB.put(0).put(y).put(-z + halfDz);
+        vertFB.put(0).put(y).put(-z);
+
+        texFB.put(1 - halfDz).put(0);
+        texFB.put(1).put(0);
+        texFB.put(1 - halfDz).put(y);
+        texFB.put(1).put(y);
+        
+        normFB.put(-1).put(0).put(0);
+        normFB.put(-1).put(0).put(0);
+        normFB.put(-1).put(0).put(0);
+        normFB.put(-1).put(0).put(0);
+        
+        int l0 = idx + 0;
+        int l1 = idx + 1;
+        int l2 = idx + 2;
+        int l3 = idx + 3;
+        idx += 4;
+
+        idxFB.put(l0).put(l2).put(l1);
+        idxFB.put(l1).put(l2).put(l3);
+
+        vertFB.put(0).put(0).put(halfDz);
+        vertFB.put(0).put(0).put(-z + halfDz);
+        vertFB.put(0).put(y).put(-z + halfDz);
+
+        texFB.put(0).put(0);
+        texFB.put(z).put(0);
+        texFB.put(z).put(y);
+
+        normFB.put(-1).put(0).put(0);
+        normFB.put(-1).put(0).put(0);
+        normFB.put(-1).put(0).put(0);
+        
+        int l4 = idx + 0;
+        int l5 = idx + 1;
+        int l6 = idx + 2;
+        idx += 3;
+
+        idxFB.put(l4).put(l6).put(l5);
+
+        // bottom
+        vertFB.put(0).put(0).put(halfDz);
+        vertFB.put(x).put(0).put(halfDz);
+        vertFB.put(0).put(0).put(-z);
+        vertFB.put(x).put(0).put(-z);
+
+        texFB.put(0).put(0);
+        texFB.put(x).put(0);
+        texFB.put(0).put(z);
+        texFB.put(x).put(z);
+
+        normFB.put(0).put(-1).put(0);
+        normFB.put(0).put(-1).put(0);
+        normFB.put(0).put(-1).put(0);
+        normFB.put(0).put(-1).put(0);
+
+        int b0 = idx + 0;
+        int b1 = idx + 1;
+        int b2 = idx + 2;
+        int b3 = idx + 3;
+        idx += 4;
+
+        idxFB.put(b0).put(b2).put(b1);
+        idxFB.put(b1).put(b2).put(b3);
+
         // end
-        vertFB.put(v2.x + outerRadius).put(0).put(v2.z);
-        vertFB.put(v3.x + outerRadius).put(0).put(v3.z);
-        vertFB.put(v2.x + outerRadius).put(y).put(v2.z);
-        vertFB.put(v3.x + outerRadius).put(y).put(v3.z);
+        vertFB.put(0).put(0).put(-z);
+        vertFB.put(x).put(0).put(-z);
+        vertFB.put(0).put(y).put(-z);
+        vertFB.put(x).put(y).put(-z);
 
         texFB.put(0).put(0);
         texFB.put(x).put(0);
@@ -666,11 +908,11 @@ public class Stair implements MeshBuilder {
         normFB.put(0).put(0).put(-1);
         normFB.put(0).put(0).put(-1);
 
-        int idx = steps * dv * 4;
         int e0 = idx + 0;
         int e1 = idx + 1;
         int e2 = idx + 2;
         int e3 = idx + 3;
+        idx += 4;
 
         idxFB.put(e0).put(e2).put(e1);
         idxFB.put(e1).put(e2).put(e3);
@@ -680,8 +922,6 @@ public class Stair implements MeshBuilder {
         mesh.setBuffer(Type.Normal, 3, normFB);
         mesh.setBuffer(Type.TexCoord, 2, texFB);
         mesh.setBuffer(Type.Index, 3, idxFB);
-
         return mesh;
     }
-
 }

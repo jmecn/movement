@@ -89,10 +89,13 @@ public class Plane implements MeshBuilder {
     }
 
     private Mesh axisZ(Mesh mesh) {
-        Vector3f va = new Vector3f(0, 0, 0);
-        Vector3f vb = new Vector3f(x, 0, 0);
-        Vector3f vc = new Vector3f(0, y, 0);
-        Vector3f vd = new Vector3f(x, y, 0);
+        float halfX = x * 0.5f;
+        float halfY = y * 0.5f;
+
+        Vector3f va = new Vector3f(-halfX, -halfY, 0);
+        Vector3f vb = new Vector3f(halfX, -halfY, 0);
+        Vector3f vc = new Vector3f(-halfX, halfY, 0);
+        Vector3f vd = new Vector3f(halfX, halfY, 0);
         Vector3f[] vertex = { va, vb, vc, vb, vd, vc };
 
         Vector3f n = new Vector3f(0, 0, 1);
@@ -105,10 +108,13 @@ public class Plane implements MeshBuilder {
     }
 
     private Mesh axisX(Mesh mesh) {
-        Vector3f va = new Vector3f(0, 0, 0);
-        Vector3f vb = new Vector3f(0, 0, -x);
-        Vector3f vc = new Vector3f(0, y, 0);
-        Vector3f vd = new Vector3f(0, y, -x);
+        float halfX = x * 0.5f;
+        float halfY = y * 0.5f;
+
+        Vector3f va = new Vector3f(0, -halfY, halfX);
+        Vector3f vb = new Vector3f(0, -halfY, -halfX);
+        Vector3f vc = new Vector3f(0, halfY, halfX);
+        Vector3f vd = new Vector3f(0, halfY, -halfX);
         Vector3f[] vertex = { va, vb, vc, vb, vd, vc };
 
         Vector3f n = new Vector3f(0, 1, 0);
@@ -119,10 +125,12 @@ public class Plane implements MeshBuilder {
     }
 
     private Mesh axisY(Mesh mesh) {
-        Vector3f va = new Vector3f(0, 0, 0);
-        Vector3f vb = new Vector3f(x, 0, 0);
-        Vector3f vc = new Vector3f(0, 0, -y);
-        Vector3f vd = new Vector3f(x, 0, -y);
+        float halfX = x * 0.5f;
+        float halfY = y * 0.5f;
+        Vector3f va = new Vector3f(-halfX, 0, halfY);
+        Vector3f vb = new Vector3f(halfX, 0, halfY);
+        Vector3f vc = new Vector3f(-halfX, 0, -halfY);
+        Vector3f vd = new Vector3f(halfX, 0, -halfY);
         Vector3f[] vertex = { va, vb, vc, vb, vd, vc };
 
         Vector3f n = new Vector3f(0, 1, 0);
@@ -132,4 +140,5 @@ public class Plane implements MeshBuilder {
         mesh.setBuffer(Type.Normal, 3, BufferUtils.createFloatBuffer(normal));
         return mesh;
     }
+
 }

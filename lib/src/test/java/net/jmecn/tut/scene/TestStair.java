@@ -62,12 +62,12 @@ public class TestStair extends SimpleApplication {
         int n = 0;
         Stair p = new Stair();
         p.setX(2);
-        p.setY(4);
+        p.setY(3);
         p.setZ(6);
         p.setBuildSide(true);
         for (int i = 0; i <= 12; i++) {
             p.setCurvature(30 * i);
-            p.setSteps(12 + i);
+            p.setSteps(12 + i/2);
             Geometry geom = new Geometry("p" + i, p.build());
 
             if (n % 2 == 0) {
@@ -83,11 +83,11 @@ public class TestStair extends SimpleApplication {
 
         Plane plane = new Plane();
         plane.setX(120);
-        plane.setY(45);
+        plane.setY(50);
         plane.setAxis(Axis.Y);
         Geometry geom = new Geometry("gy", plane.build());
         geom.setMaterial(green);
-        geom.setLocalTranslation(-3, 0, 25);
+        geom.setLocalTranslation(0, 0, 0);
         rootNode.attachChild(geom);
 
         flyCam.setEnabled(true);
@@ -95,12 +95,12 @@ public class TestStair extends SimpleApplication {
 
         // lighting
         DirectionalLight dl = new DirectionalLight();
-        dl.setColor(ColorRGBA.White.mult(0.3f));
-        dl.setDirection(new Vector3f(-1, -5, 1).normalizeLocal());
+        dl.setColor(ColorRGBA.White.mult(0.5f));
+        dl.setDirection(new Vector3f(-3, -2, 3).normalizeLocal());
         rootNode.addLight(dl);
 
         AmbientLight al = new AmbientLight();
-        al.setColor(ColorRGBA.White.mult(0.7f));
+        al.setColor(ColorRGBA.White.mult(0.5f));
         rootNode.addLight(al);
 
     }
