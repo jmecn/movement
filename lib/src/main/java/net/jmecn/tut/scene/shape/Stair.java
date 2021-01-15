@@ -736,9 +736,9 @@ public class Stair implements MeshBuilder {
         vertFB.put(x).put(y).put(-z + halfDz);
 
         texFB.put(0).put(0);
-        texFB.put(1).put(0);
+        texFB.put(x).put(0);
         texFB.put(0).put(length);
-        texFB.put(1).put(length);
+        texFB.put(x).put(length);
 
         normFB.put(0).put(n.y).put(n.z);
         normFB.put(0).put(n.y).put(n.z);
@@ -761,9 +761,9 @@ public class Stair implements MeshBuilder {
         vertFB.put(x).put(y).put(-z);
 
         texFB.put(0).put(1 - halfDz);
-        texFB.put(1).put(1 - halfDz);
+        texFB.put(x).put(1 - halfDz);
         texFB.put(0).put(1);
-        texFB.put(1).put(1);
+        texFB.put(x).put(1);
 
         normFB.put(0).put(1).put(0);
         normFB.put(0).put(1).put(0);
