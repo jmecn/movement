@@ -12,7 +12,7 @@ import com.jme3.util.BufferUtils;
  * @date 2021年1月11日
  * @version 1.0
  */
-public class Plane implements MeshBuilder {
+public class Plane {
 
     public enum Axis {
         X, Y, Z
@@ -54,7 +54,6 @@ public class Plane implements MeshBuilder {
         this.axis = axis;
     }
 
-    @Override
     public Mesh build() {
 
         Mesh mesh = new Mesh();

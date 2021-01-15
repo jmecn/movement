@@ -13,7 +13,7 @@ import com.jme3.util.BufferUtils;
  * @date 2021年1月10日
  * @version 1.0
  */
-public class Prism implements MeshBuilder {
+public class Prism {
 
     private float x = 1;
 
@@ -99,7 +99,6 @@ public class Prism implements MeshBuilder {
         this.offset = offset;
     }
 
-    @Override
     public Mesh build() {
         float twoX = x + x;
         float xTopL = x - offset;

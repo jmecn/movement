@@ -8,9 +8,8 @@ import com.jme3.scene.Mesh;
  * @date 2021年1月13日
  * @version 1.0
  */
-public class Cube implements MeshBuilder {
+public class Cube {
 
-    @Override
     public Mesh build() {
         return null;
     }

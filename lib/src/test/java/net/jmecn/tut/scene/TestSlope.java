@@ -15,6 +15,7 @@ import com.jme3.texture.Texture.WrapMode;
 
 import net.jmecn.tut.scene.shape.Plane;
 import net.jmecn.tut.scene.shape.Plane.Axis;
+import net.jmecn.tut.scene.shape.Slope;
 import net.jmecn.tut.scene.shape.Stair;
 
 /**
@@ -59,36 +60,47 @@ public class TestSlope extends SimpleApplication {
         green.setTexture("DiffuseMap", texture);
         green.setBoolean("UseMaterialColors", true);
 
-        int n = 0;
-        Stair p = new Stair();
-        p.setX(3);
-        p.setY(3);
-        p.setZ(6);
-        p.setBuildSide(true);
-        for (int i = 0; i <= 6; i++) {
-            p.setSteps(6 + i);
-            Geometry geom = new Geometry("pst" + i, p.build());
+        Stair stair = new Stair();
+        stair.setX(2);
+        stair.setY(3);
+        stair.setZ(4);
+        stair.setCurvature(270);
+        stair.setBuildSide(true);
 
-            if (n % 2 == 0) {
-                geom.setMaterial(yellow);
-            } else {
-                geom.setMaterial(white);
-            }
-            n++;
-
-            geom.setLocalTranslation(i * 7, 0, 0);
+        Slope slope = new Slope();
+        slope.setX(2);
+        slope.setY(3);
+        slope.setZ(4);
+        slope.setCurvature(270);
+        slope.setBuildSide(true);
+        for (int i = 0; i < 6; i++) {
+            stair.setSteps(6 + i);
+            slope.setSteps(6 + i);
+            Geometry geom = new Geometry("pst" + i, stair.build());
+            geom.setMaterial(yellow);
+            geom.setLocalTranslation(i * 13, 0, 8);
             rootNode.attachChild(geom);
 
-            Geometry geom2 = new Geometry("psl" + i, p.buildSlope());
+            Geometry geom2 = new Geometry("psl" + i, slope.build());
+            geom2.setMaterial(white);
+            //geom2.setMaterial(showNormal);
+            geom2.setLocalTranslation(i * 13 + 6, 0, 8);
+            rootNode.attachChild(geom2);
+        }
+
+        stair.setCurvature(0);
+        slope.setCurvature(0);
+        for (int i = 0; i < 6; i++) {
+            stair.setSteps(6 + i);
+            slope.setSteps(6 + i);
+            Geometry geom = new Geometry("pst" + i, stair.build());
+            geom.setMaterial(yellow);
+            geom.setLocalTranslation(i * 13, 0, 0);
+            rootNode.attachChild(geom);
             
-            if (n % 2 == 0) {
-                geom2.setMaterial(yellow);
-            } else {
-                geom2.setMaterial(white);
-            }
-            n++;
-            
-            geom2.setLocalTranslation(i * 7 + 3, 0, 0);
+            Geometry geom2 = new Geometry("psl" + i, slope.build());
+            geom2.setMaterial(white);
+            geom2.setLocalTranslation(i * 13 + 6, 0, 0);
             rootNode.attachChild(geom2);
         }
 
@@ -98,7 +110,7 @@ public class TestSlope extends SimpleApplication {
         plane.setAxis(Axis.Y);
         Geometry geom = new Geometry("gy", plane.build());
         geom.setMaterial(green);
-        geom.setLocalTranslation(0, 0, 0);
+        geom.setLocalTranslation(60, 0, 0);
         rootNode.attachChild(geom);
 
         flyCam.setEnabled(true);
@@ -107,7 +119,7 @@ public class TestSlope extends SimpleApplication {
         // lighting
         DirectionalLight dl = new DirectionalLight();
         dl.setColor(ColorRGBA.White.mult(0.5f));
-        dl.setDirection(new Vector3f(-3, -2, 3).normalizeLocal());
+        dl.setDirection(new Vector3f(-3, -2, -3).normalizeLocal());
         rootNode.addLight(dl);
 
         AmbientLight al = new AmbientLight();

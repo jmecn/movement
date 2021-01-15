@@ -16,7 +16,7 @@ import java.nio.IntBuffer;
  * @date 2021年1月10日
  * @version 1.0
  */
-public class Stair implements MeshBuilder {
+public class Stair {
 
     /**
      * Set the number of steps to define on the stairs. The default value is 6. Valid values range from 2 to 64.
@@ -230,7 +230,6 @@ public class Stair implements MeshBuilder {
         setZ(depth);
     }
 
-    @Override
     public Mesh build() {
         Mesh mesh = new Mesh();
         mesh.setStatic();
